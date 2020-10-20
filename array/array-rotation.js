@@ -1,3 +1,4 @@
+const assert = require("assert");
 /*
  * https://www.geeksforgeeks.org/array-rotation/
  * Write a function rotate(arr, d, n) that rotates array arr of size n by d elements.
@@ -6,6 +7,23 @@
  * d = 2;
  * rotate(arr, d) = [ 3, 4, 5, 6, 7, 1, 2 ];
  */
+
+const tests = (func) => {
+  console.log("\tfirst test case");
+  let result = func([1, 2, 3, 4, 5, 6, 7], 2);
+  let expected = [3, 4, 5, 6, 7, 1, 2];
+  assert.equal(JSON.stringify(result), JSON.stringify(expected));
+
+  console.log("\tsecond test case");
+  result = func([1, 2, 3, 4, 5, 6, 7], 4);
+  expected = [5, 6, 7, 1, 2, 3, 4];
+  assert.equal(JSON.stringify(result), JSON.stringify(expected));
+};
+
+const getGcd = (a, b) => {
+  if (b === 0) return a;
+  getGcd(b, a % b);
+};
 
 /*
  * using temp array
@@ -19,8 +37,7 @@ const rotateWithTempArray = (arr, d) => {
   return temp;
 };
 console.log("rotating with array");
-console.log(rotateWithTempArray([1, 2, 3, 4, 5, 6, 7], 2));
-console.log(rotateWithTempArray([1, 2, 3, 4, 5, 6, 7], 4));
+tests(rotateWithTempArray);
 
 /*
  * using temp sub-array
@@ -34,8 +51,7 @@ const rotateWithSubArray = (arr, d) => {
   return [...arr.slice(0, arr.length - d), ...temp];
 };
 console.log("rotating with sub array");
-console.log(rotateWithSubArray([1, 2, 3, 4, 5, 6, 7], 2));
-console.log(rotateWithSubArray([1, 2, 3, 4, 5, 6, 7], 4));
+tests(rotateWithSubArray);
 
 /*
  * recursive / functional approach
@@ -53,14 +69,18 @@ const rotateRecursive = (arr, d) => {
   return rotateRecursive(arr, --d);
 };
 console.log("rotating recursive");
-console.log(rotateRecursive([1, 2, 3, 4, 5, 6, 7], 2));
-console.log(rotateRecursive([1, 2, 3, 4, 5, 6, 7], 4));
+tests(rotateRecursive);
 
 /*
  * juggling approach
+ *
  */
 const rotateJuggle = (arr, d) => {
-  for (let count = 0; count < d; count++) {
+  // we have to get the greatest common divisor (gcd) of the array size and the number of elements to rotate
+  // if we don't use the gcd, the juggling doesn't work - I think because the rotations don't fit nicely into the buckets
+  const gcd = getGcd(d, arr.length);
+
+  for (let count = 0; count < gcd; count++) {
     // starting with base element, rotate elements that are d elements away
     const temp = arr[count];
     let index = count;
@@ -73,5 +93,4 @@ const rotateJuggle = (arr, d) => {
   return arr;
 };
 console.log("rotating juggle");
-console.log(rotateJuggle([1, 2, 3, 4, 5, 6, 7], 2));
-console.log(rotateJuggle([1, 2, 3, 4, 5, 6, 7], 4));
+tests(rotateJuggle);
