@@ -22,7 +22,7 @@ const tests = (func) => {
 
 const getGcd = (a, b) => {
   if (b === 0) return a;
-  getGcd(b, a % b);
+  return getGcd(b, a % b);
 };
 
 /*
@@ -80,14 +80,11 @@ const rotateJuggle = (arr, d) => {
   // if we don't use the gcd, the juggling doesn't work - I think because the rotations don't fit nicely into the buckets
   const gcd = getGcd(d, arr.length);
 
-  for (let count = 0; count < gcd; count++) {
+  for (let count = 0; count < d; count++) {
     // starting with base element, rotate elements that are d elements away
     const temp = arr[count];
     let index = count;
-    for (; index < arr.length; index += d) {
-      if (!(index + d < arr.length)) break;
-      arr[index] = arr[index + d];
-    }
+    for (; index < arr.length; index += gcd) arr[index] = arr[index + gcd];
     arr[index] = temp;
   }
   return arr;
