@@ -18,10 +18,12 @@ Note: **a string is simply an array of characters**
 - insertion and deletion of elements can be costly since the entire array may need to be re-allocated in memory
 
 ### [Complexity of operations](https://www.bigocheatsheet.com/)
-- access: O(1)
-- search: O(n)
-- insertion: O(n)
-- deletion: O(n)
+| | Static Array | Dynamic Array | Notes |
+| access | O(1) | O(1) | |
+| search | O(n) | O(n) | |
+| insertion | n/a | O(n) | can't you insert into a static array if it is not full? |
+| appending | n/a | O(1) | |
+| deletion | n/a | O(n) | |
 
 ### Terimnology
 - base value: the value at index 0 of an array
