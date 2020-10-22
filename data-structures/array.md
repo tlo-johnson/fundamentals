@@ -1,3 +1,15 @@
+## [YouTube - Data Structures Easy to Advanced Course - Full Tutorial from a Google Engineer](https://www.youtube.com/watch?v=RBSGKlAvoiM)
+A static array is a fixed length container containing n elements indexable from the range [0, n-1]. The elements in a static array are contiguous in memory.
+
+### Complexity of operations
+| | Static Array | Dynamic Array | Notes |
+| access | O(1) | O(1) | |
+| search | O(n) | O(n) | |
+| insertion | n/a | O(n) | by definition, insertion includes resizing the array when necessary. this is obviously not possible with a static array |
+| appending | n/a | O(1) | by definition, appending includes resizing the array when necessary. this is obviously not possible with a static array |
+| deletion | n/a | O(n) | by definition, deletion includes resizing the array when necessary. this is obviously not possible with a static array |
+
+## [Geeks for Geeks](https://www.geeksforgeeks.org/data-structures/)
 When we have a small number of items, we can use variables (x, y, z, ...) to store them. If we want to store a large number of items, using variables becomes difficult. The idea of an array is to represent many items in one variable.
 
 An array is a collection of items **stored contiguous memory locations**. This makes it easier to calculate the position of each element by simply adding an offset to a base value (i.e. the memory location of the first element of the array).
@@ -18,12 +30,6 @@ Note: **a string is simply an array of characters**
 - insertion and deletion of elements can be costly since the entire array may need to be re-allocated in memory
 
 ### [Complexity of operations](https://www.bigocheatsheet.com/)
-| | Static Array | Dynamic Array | Notes |
-| access | O(1) | O(1) | |
-| search | O(n) | O(n) | |
-| insertion | n/a | O(n) | can't you insert into a static array if it is not full? |
-| appending | n/a | O(1) | |
-| deletion | n/a | O(n) | |
 
 ### Terimnology
 - base value: the value at index 0 of an array
