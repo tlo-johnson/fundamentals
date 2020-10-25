@@ -54,9 +54,10 @@ This can be done using one trav pointer but for this case, we'll use two pointer
 5. Clean up memory for trav
 
 ### Complexity
-| | Singly Linked | Doubly Linked |
-| Search | O(n) | O(n) |
-| Insert at head | O(1) | O(1) |
-| Insert at tail | O(1) | O(1) |
-
-Stopped at 48m
+| | Singly Linked (SLL) | Doubly Linked (DLL)| Notes |
+| Search | O(n) | O(n) | you need to walk the linked list to find the node |
+| Insert at head | O(1) | O(1) | |
+| Insert at tail | O(1) | O(1) | |
+| Remove at head | O(1) | O(1) | |
+| Remove at tail | O(n) | O(1) | in SLL you don't have access to the tail's previous node so you need to walk the linked list to set the new tail |
+| Remove in middle | O(n) | O(n) | since you have to walk the linked list to the position you want to remove |
