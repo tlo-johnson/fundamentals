@@ -29,6 +29,22 @@ Note: a heap does not have to be a binary heap.
 ### Turning Min PQ to Max PQ
 Simply negate a min PQ to get a max PQ and vice versa
 
-### Adding Elements to a Binary Heap
+### Adding and Removing Elements in a Binary Heap
 Note: a complete binary tree is a tree in which every level, except possibly the last, is completely filled. If the last level is not completely filled, the nodes are as far left as possible.
 ![binary heap representation](./imgs/binary-heap-representation.png "binary heap representation")
+
+When a binary heap is represented as an array:
+- looping through the indexes of the array walks the binary heap from left to right, going through each level from top to bottom.
+- left child index for any node is located at index 2n + 1 (0-based index)
+- right child index for any node is located at index 2n + 2 (0-based index)
+
+#### Algorithm for adding elements to a Binary Heap
+1. Add node at insertion point. Insertion point is always at the lowest, leftmost available possition in the tree.
+2. Bubble up till the heap invariant is satisfied.
+  - bubbling is done by swapping the current node with its parent or child as required
+
+#### Algorithm for adding elements to a Binary Heap
+1. Find node to be removed. Usually this is the node at the root of the tree.
+2. Swap removal node with node at the removal point. Removal point is always the lowest, rightmost node in the tree.
+3. Bubble up/down till the heap invariant is satisfied
+  - default to selecting the left child in the case where both child nodes are the same. why? (good question)
