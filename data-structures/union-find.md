@@ -37,3 +37,4 @@ Union: to unify two elements find the root nodes of each componend. If the root 
 
 ### Path Compression
 With path compression, instead of just changing root nodes during a union operation, we perform a compression step.  Let's say in order to find the root node for E we traversed E -> D -> C -> B -> A, during compression we would change the paths to get E -> A, D -> A, C -> A, B -> A. The next time we need to find the root of E, it only takes one operation instead of five.
+Essentially with path compression, anytime you walk a path, update all nodes along the path to point to the root node of the path
