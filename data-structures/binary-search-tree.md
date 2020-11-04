@@ -1,4 +1,4 @@
-## [YouTube - Data Structures Easy to Advanced Course - Full Tutorial from a Google Engineer](https://www.youtube.com/watch?v=RBSGKlAvoiM&t=10442s)
+## [YouTube - Data Structures Easy to Advanced Course - Full Tutorial from a Google Engineer](https://youtu.be/RBSGKlAvoiM?t=11035)
 A tree is an undirected graph which satisfies **any** of the following definitions:
 - an acyclic connected graph
 - a connected graph with N nodes and N-1 edges
@@ -42,3 +42,15 @@ A binary search tree is a binary tree that satisfies the BST invariant: for ever
     - note: to find the largst value in the left subtree, go to the left child, then go as far right as possible. once you can't go right anymore, you are at the largest value.
     - note: to find the smallest value in the right subtree, go to the right child, then go as far left as possible. once you can't go left anymore, you are at the smallest value.
     - once a successor node is chosen, copy the value of the successor to the node to be removed, then perform either 'a' or 'b' on the successor node - it will always be either case 'a' or 'b'
+
+### Traversals
+- preorder: print current node, then recurse left subtree, then recurse right subtree
+- inorder: recurse left subtree, then print current node, then recurse right subtree
+- postorder: recurse left subtree, then recurse right subtree, then print current node
+- level order: BFS starting from root node
+  - put root node in queue
+  - dequeue node and print value
+  - enqueue left child node and right child node
+  - recurse till queue is empty
+
+Note: an inorder traversal of a BST will print elements in increasing order
