@@ -31,6 +31,7 @@ A hash collision occurs when multiple keys hash to the same value. There are man
 
 Note: separate chaining introduces auxillary data structures where open addressing maintains all values in one array.
 Note: we need to store both the key and the value in the linked list because we need a way to distinguish between values that collided.
+**Important Note:** we always store both the key and the value in a hash table so that we can find the right key in the case when a collision occurs.
 
 ##### Hash Table: Separate Chaining
 In separate chaining, each index in the array holds a data structure (e.g a linked list contaning values) instead of directly holding the values being stored.
@@ -38,8 +39,8 @@ In order to maintain constant insertion and lookup time complexity once the HT g
 Some other data structures used to track collisions are arrays, binary trees, self balancing trees, a hybrid of data structures, etc. Anything is possible really!!
 
 ##### Hash Table: Open Addressing
-- Load factor: the number of items in the table / size of the table
-Once our load factor gets close to some threshold, we need to grow the HT in order to maintain constant time behaviour.
+- Load factor (α): the number of items in the table / size of the table
+Once our load factor gets close to some threshold, we need to grow the HT in order to maintain constant time behaviour. For example, given a max α of 0.667 and a table size (N) of 9, we would resize the hash table at N * α = 6.
 
 When using open addressing, in the event of a collision we use a probing sequence P(x) to probe for the next available position, and we store our value there. If there are no available positions (i.e. the HT is full) we need to grow the HT.
 Note: you should have grown the HT a long time before the HT becomes full based on the load factor of the HT.
@@ -59,6 +60,16 @@ Pseudocode for insertion:
 3. Insert (k,v) at table[index]
 Note: H(k) is the hash for the key k adn P(k,x) is the probing function
 Note: the probing function simply generates an offset from the current position!!
+Note: the probing function always starts with x = 0 and then increments x when a collision occurs ... x has nothing to do with the key/value pair being inserted - it's simply a counter for the probing function.
+
+One big problem with open addressing is when the probing sequence mod N will produce a cycle shorter than the table size. For example, imagine P(x) = 3x and a hash table of size 10. Once 3, 6 and 9 are filled up, our probing sequence will keep looping over those indexes although we may have other slots available in the hash table. The general solution to this is to choose a probing function that has a cycle of length N, given a hash table of size N. (i.e. the probing function should hit all indexes in the hash table before it cycles)
+
+##### Hash Table: Open Addressing: Linear Probing
+Remember: Linear probing is a probing function of the form P(x) = ax + b.
+With linear probing, we get a probing function that produces a full cycle modulo N when 'a' and 'N' are relatively prime (i.e. their greatest common denominator is 1), denoted GCD(a,N) = 1
+Note: when doubling (or tripling) your HT because you've hit your max load factor, you need to ensure the new HT size (N) still maintains the GCD(a,N) = 1 property. Also remember that you need to rehash all elements from your old table to your new table when you expand your table.
+
+##### Hash Table: Open Addressing: Quadratic Probing
 
 ### Complexity
 | Operation | Average | Worst |
@@ -66,4 +77,3 @@ Note: the probing function simply generates an offset from the current position!
 | Removal | O(1)\* | O(n) |
 | Search | O(1)\* | O(n) |
 Note: the constant time behavior is only true if you have a good uniform hash function.
-
