@@ -48,8 +48,8 @@ When looking for a value, you use hash the key, use the probing sequence to find
 
 Some ways of probing:
 - Linear probing: P(x) = ax + b
-- Quadratic probing: P(x) = axx + bx + c
-- Double hashing
+- Quadratic probing: P(x) = ax² + bx + c
+- Double hashing: P(k,x) = x * H₂(k)
 - Pseudo random number generator
 
 Pseudocode for insertion:
@@ -62,7 +62,7 @@ Note: H(k) is the hash for the key k adn P(k,x) is the probing function
 Note: the probing function simply generates an offset from the current position!!
 Note: the probing function always starts with x = 0 and then increments x when a collision occurs ... x has nothing to do with the key/value pair being inserted - it's simply a counter for the probing function.
 
-One big problem with open addressing is when the probing sequence mod N will produce a cycle shorter than the table size. For example, imagine P(x) = 3x and a hash table of size 10. Once 3, 6 and 9 are filled up, our probing sequence will keep looping over those indexes although we may have other slots available in the hash table. The general solution to this is to choose a probing function that has a cycle of length N, given a hash table of size N. (i.e. the probing function should hit all indexes in the hash table before it cycles)
+One big problem with open addressing is when the probing sequence mod N produces a cycle shorter than the table size. For example, imagine P(x) = 3x and a hash table of size 10. Once 3, 6 and 9 are filled up, our probing sequence will keep looping over those indexes although we may have other slots available in the hash table. The general solution to this is to choose a probing function that has a cycle of length N, given a hash table of size N. (i.e. the probing function should hit all indexes in the hash table in one cycle)
 
 ##### Hash Table: Open Addressing: Linear Probing
 Remember: Linear probing is a probing function of the form P(x) = ax + b.
@@ -70,6 +70,22 @@ With linear probing, we get a probing function that produces a full cycle modulo
 Note: when doubling (or tripling) your HT because you've hit your max load factor, you need to ensure the new HT size (N) still maintains the GCD(a,N) = 1 property. Also remember that you need to rehash all elements from your old table to your new table when you expand your table.
 
 ##### Hash Table: Open Addressing: Quadratic Probing
+Remember: Quadratic probing is a probing function of the form P(x) = ax² + bx + c
+With quadratic probing, we get a probing function that produces a full cycle modulo N when:
+- Let P(x) = x², keep the table size a prime number > 3 and keep α ≤ ½
+- Let P(x) = (x² + x)/2, keep the table size a power of two
+Of course there are other ways to choose a quadratic probing function that satisfies the cycle requirements.
+
+##### Hash Table: Open Addressing: Double Hashing
+Remember: Double hashing probing is a probing function of the form P(k,x) = x * H₂(k), where H₂(k) is a second hash function
+Note: H₂(x) must hash the same type of keys as H₁(x)
+Note: double hashing reduces to linear probing (except that the coefficient, H₂(k), is unknown until runtime).
+
+To satisfy the open addressing cycle requirement:
+1. pick table size to be a prime number
+2. calculate δ = H₂(k) mod N. note that δ is our 
+  a. if δ = 0 we are guaranteed to be stuck in a cycle, so set δ = 1
+Proof: we know that 1 ≤ δ < N. Since we have chosen N to be prime, GCD(δ,N) = 1. This means that H₁(k) + cδ, for any constant c, will satisfy the open addressing cycle requirement
 
 ### Complexity
 | Operation | Average | Worst |
