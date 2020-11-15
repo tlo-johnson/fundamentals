@@ -14,14 +14,61 @@
  *  - n to go through text character by character, log(k) to store words in priority queue
  */
 
-class maxPriorityQueue {
+class MaxPriorityQueue {
   items = [];
+  size = 0;
 
   add(item) {
-    items.push(item);
-    percolateUp(item);
+    size === items.length - 1 ? items.push(item) : (items[maxIndex()] = item);
+    percolateUp(size);
+    size++;
   }
 
-  const percolateUp = () => {
+  remove() {
+    const result = items[0];
+    items[0] = items[--size];
+    percolateDown(0);
+    return result;
   }
+
+  percolateUp = (currentIndex) => {
+    if (currentIndex === 0) return;
+
+    const parentIndex = currentIndex / 2;
+    if (items[parentIndex] >= items[currentIndex]) return;
+
+    swap(parentIndex, currentIndex);
+    percolateUp(parentIndex);
+  };
+
+  percolateDown = (currentIndex) => {
+    const leftChildIndex = currentIndex * 2;
+    if (percolateDownChild(currentIndex, leftChildIndex)) return;
+
+    const rightChildIndex = currentIndex * 2 + 1;
+    percolateDownChild(currentIndex, rightChildIndex);
+  };
+
+  percolateDownChild = (currentIndex, childIndex) => {
+    if (childIndex > maxIndex()) return false;
+    if (!(items[childIndex] <= items[currentIndex])) {
+      swap(currentIndex, childIndex);
+      percolateDown(childIndex);
+      return true;
+    }
+
+    return false;
+  };
+
+  swap = (index1, index2) => {
+    const temp = items[index1];
+    items[index1] = items[index2];
+    items[index2] = temp;
+  };
+
+  maxIndex = () => size - 1;
 }
+
+const topThreeWords = (text) => {
+  for (let index = 0; index < text.length; index++) {}
+};
