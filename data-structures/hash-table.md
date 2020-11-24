@@ -16,6 +16,13 @@ Note: it's okay for a hash function to yield the same value given two different 
 Note: Comparing hash values is constant time since a hash value is bounded by a fixed range
 Note: checksums are simply hash values - complex hash function (actually cryptographic hash function) but simply a hash value nonetheless
 
+### Complexity
+| Operation | Average | Worst |
+| Insertion | O(1)\* | O(n) |
+| Removal | O(1)\* | O(n) |
+| Search | O(1)\* | O(n) |
+Note: the constant time behavior is only true if you have a good uniform hash function.
+
 ### Hash Keys
 - a key of type T is hashable if it is immutable (e.g. string, int)
 - lists, sets, etc. are not good hash keys since we can add and remove elements from them.
@@ -27,7 +34,7 @@ Note: a hash table can be thought of as a fancy name for an array of key value p
 ### Hash Collisions
 A hash collision occurs when multiple keys hash to the same value. There are many hash collision resolution techniques
 - separate chaining: maintain a data structure (usually a linked list) to hold all the different values
-- open addressing: find another place within the hash table for the object to go, offsetting it from the position it hashed to.
+- open addressing: find another place within the hash table for the object to go, **offsetting it from the position it originally hashed to**.
 
 Note: separate chaining introduces auxillary data structures where open addressing maintains all values in one array.
 Note: we need to store both the key and the value in the linked list because we need a way to distinguish between values that collided.
@@ -87,9 +94,9 @@ To satisfy the open addressing cycle requirement:
   a. if δ = 0 we are guaranteed to be stuck in a cycle, so set δ = 1
 Proof: we know that 1 ≤ δ < N. Since we have chosen N to be prime, GCD(δ,N) = 1. This means that H₁(k) + cδ, for any constant c, will satisfy the open addressing cycle requirement
 
-### Complexity
-| Operation | Average | Worst |
-| Insertion | O(1)\* | O(n) |
-| Removal | O(1)\* | O(n) |
-| Search | O(1)\* | O(n) |
-Note: the constant time behavior is only true if you have a good uniform hash function.
+##### Hash Table: Open Addressing: Removing
+If you naively remove an element from the table, setting its value to null, you may break the probing chain in the middle - the next time you're going through the probing chain and you come across a null value, you don't know if that null value means you have reached the end of your chain or if it's a spot where something was removed, and there are more items in the probing chain still to be probed.
+To solve this, when removing an element from a table, use a tombstone (a unique marker) to denote that the element has been removed.
+How do tombstones get replaced with real values?
+  - tombstones count as filled slots when determining load factor - they will be cleared when the table is resized
+  - lazy deletion: when searching for a key, keep track of the first tombstone index you come across. once you find the key you were looking for, swap the index with that of the first tombstone you tracked. this reduces the total length of the probing chain.
