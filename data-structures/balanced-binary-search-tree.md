@@ -29,7 +29,7 @@ reason about it this way - on a right rotation, node A becomes the right child o
 ### avl tree
 the property which keeps an avl tree balanced is called the balanced factor (bf)
 `bf(node) = H(node.right) - H(node.left) where H(x) is the height of node x`
-remember: height of a node is the number of edges between the node and the furthest leaf.
+remember: height of a node is the number of **edges** between the node and the furthest leaf. a single node has zero height.
 note: a negative bf means the height of the left child is greater than the height of the right child, while a positive bf means the hight of the right child is greater than the height of the left child.
 
 additional avl invariant: the balance factor of every node is either -1, 0, or 1
@@ -50,3 +50,12 @@ note that an imbalance means either a +2 or a -2 bf. anything greater and it mea
   algorithm: perform a right rotation then a left rotation
 
 note: at the end of your avl tree insertion, you need to update the heights/bfs of each node!!
+
+### removing elements from a bst
+1. find the element we wish to remove (if it exists)
+2. replace the node we want to remove with its successor (if any) to maintain the bst invariant
+  a. if node is a leaf node, simply do nothing
+  b. if node has either left or right children (but not both), the child becomes the successor
+  c. if node has both left and right children, either the smallest value in the right subtree (go right once, then left as much as possible) or the biggest value in the left subtree (go left once, then right as much as possible) can be the successor. once the successor's value has been copied, be sure to remove the duplicate value from the tree!!
+
+in the avl case, after performing the removal algorithm above, simply update the bf values and balance the tree if needed.
