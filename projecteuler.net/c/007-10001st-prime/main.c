@@ -16,23 +16,19 @@ int main()
     result = 3;
 
   int num = 5;
-  for (; position > 0; position--)
+  while (position > 0)
   {
-    // skip all even numbers
-    for (; ; num += 2)
+    for (int divisor = 3; !isDivisible(num, divisor); divisor += 2)
     {
-      for (int divisor = 3; !isDivisible(num, divisor); divisor++)
-      {
-        if (!primeFound(num, divisor))
-          continue;
+      if (!primeFound(num, divisor))
+        continue;
 
-        result = num;
-        num += 2;
-        goto findNextPrime;
-      }
+      result = num;
+      position--;
+      break;
     }
-findNextPrime:
-    ;
+
+    num += 2;
   }
 
   printf("%d\n", result);
