@@ -38,9 +38,6 @@ int main()
 
   getNum(fptr, num, numDigits);
   unsigned long int largestProduct = getProduct(num, numDigits);
-  char digits[numDigits + 1];
-
-  strcpy(digits, num);
 
   char digit;
   while ((digit = getDigit(fptr)) != '\n')
@@ -48,13 +45,10 @@ int main()
     slideWindow(num, numDigits, digit);
     unsigned long int product = getProduct(num, numDigits);
     if (product > largestProduct)
-    {
       largestProduct = product;
-      strcpy(digits, num);
-    }
   }
-  printf("%lu | %s\n", largestProduct, digits);
 
+  printf("%lu\n", largestProduct);
   fclose(fptr);
   return 0;
 }
