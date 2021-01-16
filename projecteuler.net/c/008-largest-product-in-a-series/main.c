@@ -1,31 +1,60 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int getInitialProduct();
+char getDigit(FILE *ptr)
+{
+  char value;
+  fscanf(ptr, "%c", &value);
+  return value;
+}
+
+void getNum(FILE *fptr, char num[], int size)
+{
+  for (int count = 0; count < size; count++)
+    num[count] = getDigit(fptr);
+  num[size] = '\0';
+}
+
+unsigned long int getProduct(char num[], int size)
+{
+  unsigned long int product = 1;
+  while (--size >= 0)
+    product *= num[size] - 48;
+  return product;
+}
+
+void slideWindow(char num[], int size, char digit)
+{
+  for (int count = 0; count < size; count++)
+    num[count] = (count == size - 1) ? digit : num[count + 1];
+}
 
 int main()
 {
-  int numDigits = 4;
-  int product = 0;
-  FILE *ptr = fopen("input.txt", "r");
+  int numDigits = 13;
+  char num[numDigits + 1];
+  FILE *fptr = fopen("input.txt", "r");
 
-  product = getInitialProduct(ptr, numDigits);
-  printf("%d\n", product);
+  getNum(fptr, num, numDigits);
+  unsigned long int largestProduct = getProduct(num, numDigits);
+  char digits[numDigits + 1];
 
-  fclose(ptr);
+  strcpy(digits, num);
 
-  return 0;
-}
-
-int getInitialProduct(FILE *ptr, int numDigits)
-{
-  int num = 1;
-  while (numDigits-- > 0)
+  char digit;
+  while ((digit = getDigit(fptr)) != '\n')
   {
-    char value;
-    fscanf(ptr, "%c", &value);
-    num *= (value - 48); // convert char to decimal in utf8 char set
+    slideWindow(num, numDigits, digit);
+    unsigned long int product = getProduct(num, numDigits);
+    if (product > largestProduct)
+    {
+      largestProduct = product;
+      strcpy(digits, num);
+    }
   }
+  printf("%lu | %s\n", largestProduct, digits);
 
-  return num;
+  fclose(fptr);
+  return 0;
 }
