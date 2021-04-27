@@ -54,7 +54,8 @@ char* kangaroo(int x1, int v1, int x2, int v2) {
    * */
 
   // need to ensure no division by zero
-  if (v1 == v2 && x1 != x2) return "NO";
+  // note: problem statement states x1 < x2 so if v1 == v2, answer must be no
+  if (v1 == v2) return "NO";
 
   int dividend = (x2 - x1) / (v1 - v2);
   int remainder = (x2 - x1) % (v1 - v2);
