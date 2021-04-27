@@ -47,8 +47,18 @@ int parse_int(char*);
  *
  */
 char* kangaroo(int x1, int v1, int x2, int v2) {
-  // yields incorrect answer with input 0 2 5 3
-  if ((x1 - x2) % (v2 - v1) == 0) return "YES";
+  /*
+   * v1y + x1 = v2y + x2;
+   * y(v1 - v2) = x2 - x1;
+   * y = (x2 - x1) / (v1 - v2);
+   * */
+
+  // need to ensure no division by zero
+  if (v1 == v2 && x1 != x2) return "NO";
+
+  int dividend = (x2 - x1) / (v1 - v2);
+  int remainder = (x2 - x1) % (v1 - v2);
+  if (dividend > 0 && remainder == 0) return "YES";
   return "NO";
 }
 
