@@ -14,93 +14,74 @@ char* ltrim(char*);
 char* rtrim(char*);
 char** split_string(char*);
 
-int parse_int(char*);
+// Complete the birthday function below.
+int birthday(int s_count, int* s, int d, int m) {
+  /*
+   * technique: sliding window
+   *
+   * select m elements (window)
+   * check condition: sum(m) == d
+   * remove element from front of window, add element to back of window
+   * goto 'check condition' step
+   */
 
-/*
- * Complete the 'breakingRecords' function below.
- *
- * The function is expected to return an INTEGER_ARRAY.
- * The function accepts INTEGER_ARRAY scores as parameter.
- */
+  int count = 0, sum = 0, result = 0;
+  while (count < m) {
+    sum += s[count++];
+  }
+  if (sum == d) result++;
 
-/*
- * To return the integer array from the function, you should:
- *     - Store the size of the array to be returned in the result_count variable
- *     - Allocate the array statically or dynamically
- *
- * For example,
- * int* return_integer_array_using_static_allocation(int* result_count) {
- *     *result_count = 5;
- *
- *     static int a[5] = {1, 2, 3, 4, 5};
- *
- *     return a;
- * }
- *
- * int* return_integer_array_using_dynamic_allocation(int* result_count) {
- *     *result_count = 5;
- *
- *     int *a = malloc(5 * sizeof(int));
- *
- *     for (int i = 0; i < 5; i++) {
- *         *(a + i) = i + 1;
- *     }
- *
- *     return a;
- * }
- *
- */
-int* breakingRecords(int scores_count, int* scores, int* result_count) {
-  int maxScore, maxScoreBroken, minScore, minScoreBroken;
-  maxScore = minScore = scores[0];
-  maxScoreBroken = minScoreBroken = 0;
-
-  for (int count = 1; count < scores_count; count++) {
-    if (maxScore < scores[count]) {
-      maxScoreBroken++;
-      maxScore = scores[count];
-    }
-
-    if (minScore > scores[count]) {
-      minScoreBroken++;
-      minScore = scores[count];
-    }
+  while (count < s_count) {
+    sum -= s[count - m];
+    sum += s[count];
+    if (sum == d) result++;
+    count++;
   }
 
-  *result_count = 2;
-
-  static int result[2];
-  result[0] = maxScoreBroken;
-  result[1] = minScoreBroken;
   return result;
 }
 
 int main()
 {
-    int n = parse_int(ltrim(rtrim(readline())));
+    char* n_endptr;
+    char* n_str = ltrim(rtrim(readline()));
+    int n = strtol(n_str, &n_endptr, 10);
 
-    char** scores_temp = split_string(rtrim(readline()));
+    if (n_endptr == n_str || *n_endptr != '\0') { exit(EXIT_FAILURE); }
 
-    int* scores = malloc(n * sizeof(int));
+    char** s_temp = split_string(rtrim(readline()));
+
+    int* s = malloc(n * sizeof(int));
 
     for (int i = 0; i < n; i++) {
-        int scores_item = parse_int(*(scores_temp + i));
+        char* s_item_endptr;
+        char* s_item_str = *(s_temp + i);
+        int s_item = strtol(s_item_str, &s_item_endptr, 10);
 
-        *(scores + i) = scores_item;
+        if (s_item_endptr == s_item_str || *s_item_endptr != '\0') { exit(EXIT_FAILURE); }
+
+        *(s + i) = s_item;
     }
 
-    int result_count;
-    int* result = breakingRecords(n, scores, &result_count);
+    int s_count = n;
 
-    for (int i = 0; i < result_count; i++) {
-        printf("%d", *(result + i));
+    char** dm = split_string(rtrim(readline()));
 
-        if (i != result_count - 1) {
-            printf(" ");
-        }
-    }
+    char* d_endptr;
+    char* d_str = dm[0];
+    int d = strtol(d_str, &d_endptr, 10);
 
-    printf("\n");
+    if (d_endptr == d_str || *d_endptr != '\0') { exit(EXIT_FAILURE); }
+
+    char* m_endptr;
+    char* m_str = dm[1];
+    int m = strtol(m_str, &m_endptr, 10);
+
+    if (m_endptr == m_str || *m_endptr != '\0') { exit(EXIT_FAILURE); }
+
+    int result = birthday(s_count, s, d, m);
+
+    printf("%d\n", result);
 
     return 0;
 }
@@ -108,7 +89,6 @@ int main()
 char* readline() {
     size_t alloc_length = 1024;
     size_t data_length = 0;
-
     char* data = malloc(alloc_length);
 
     while (true) {
@@ -212,15 +192,4 @@ char** split_string(char* str) {
     }
 
     return splits;
-}
-
-int parse_int(char* str) {
-    char* endptr;
-    int value = strtol(str, &endptr, 10);
-
-    if (endptr == str || *endptr != '\0') {
-        exit(EXIT_FAILURE);
-    }
-
-    return value;
 }
