@@ -26,17 +26,6 @@ int parse_int(char*);
  *  3. INTEGER_ARRAY ar
  */
 
-/*
- * the key to the better solution is:
- * any numbers satisfying num % k == 0 will match with any other number satisfying num % k == 0
- * any numbers satisfying num % k == 1 will match with any other number satisfying num % k == k - 1
- * any numbers satisfying num % k == 2 will match with any other number satisfying num % k == k - 2
- * any numbers satisfying num % k == x will match with any other number satisfying num % k == k - x
- *
- * intuitively, if n % k == 2, you need (k - 2) to get to the next multiple. so, a match will be any number that
- * satisfies n % k == k - 2
- */
-
 int bruteForceDivisibleSumPairs(int n, int k, int ar_count, int* ar) {
   int result = 0;
 
@@ -51,6 +40,17 @@ int bruteForceDivisibleSumPairs(int n, int k, int ar_count, int* ar) {
 
   return result;
 }
+
+/*
+ * the key to the better solution is:
+ * any numbers satisfying num % k == 0 will match with any other number satisfying num % k == 0
+ * any numbers satisfying num % k == 1 will match with any other number satisfying num % k == k - 1
+ * any numbers satisfying num % k == 2 will match with any other number satisfying num % k == k - 2
+ * any numbers satisfying num % k == x will match with any other number satisfying num % k == k - x
+ *
+ * intuitively, if n % k == 2, you need (k - 2) to get to the next multiple. so, a match will be any number that
+ * satisfies n % k == k - 2
+ */
 
 int divisibleSumPairs(int n, int k, int ar_count, int* ar) {
   int* remainders = calloc(k, sizeof(int));
