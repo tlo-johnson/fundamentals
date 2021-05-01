@@ -37,7 +37,7 @@ int parse_int(char*);
  * satisfies n % k == k - 2
  */
 
-int divisibleSumPairs(int n, int k, int ar_count, int* ar) {
+int bruteForceDivisibleSumPairs(int n, int k, int ar_count, int* ar) {
   int result = 0;
 
   for (int i = 0; i < ar_count; i++) {
@@ -47,6 +47,26 @@ int divisibleSumPairs(int n, int k, int ar_count, int* ar) {
       int addend = ar[j];
       if ((summand + addend) % k == 0) result++;
     }
+  }
+
+  return result;
+}
+
+int divisibleSumPairs(int n, int k, int ar_count, int* ar) {
+  int* remainders = calloc(k, sizeof(int));
+
+  for (int count = 0; count < ar_count; count++) {
+    int val = ar[count];
+    int remainder = val % k;
+    remainders[remainder] += 1;
+  }
+
+  int result = 0;
+  for (int count = 0; count <= k - count; count++) {
+    if (count == 0 || count == k - count)
+      result += (remainders[count] * (remainders[count] - 1)) / 2;
+    else
+      result += remainders[count] * remainders[k - count];
   }
 
   return result;
