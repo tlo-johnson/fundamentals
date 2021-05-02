@@ -33,12 +33,7 @@ int migratoryBirds(int arr_count, int* arr) {
 
   int result = 1;
   for (int count = 2; count <= 5; count++) {
-    if (counts[result] == 0) {
-      result = count;
-      continue;
-    }
-
-    if (counts[count] > result)
+    if (counts[count] > counts[result])
       result = count;
   }
 
@@ -176,6 +171,8 @@ char** split_string(char* str) {
 }
 
 int parse_int(char* str) {
+  static int count = 0;
+  printf("%d: %s\n", count++, str);
     char* endptr;
     int value = strtol(str, &endptr, 10);
 
