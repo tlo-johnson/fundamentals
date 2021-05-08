@@ -52,13 +52,13 @@ int parse_int(char*);
  * }
  *
  */
-int findRankIndex(int ranked_count, int* ranked, int score)
+int findRank(int worst_rank, int* ranked, int score)
 {
   if (ranked[0] <= score) return 0;
-  if (ranked[ranked_count - 1] >= score) return ranked_count - 1;
+  if (ranked[worst_rank - 1] > score) return worst_rank;
 
   int left_index = 0;
-  int right_index = ranked_count - 1;
+  int right_index = worst_rank - 1;
   int mid = (left_index + right_index) / 2;
 
   while (left_index != mid && right_index != mid) {
@@ -73,51 +73,19 @@ int findRankIndex(int ranked_count, int* ranked, int score)
   return right_index;
 }
 
-int findRankFromIndex(int score, int* ranked, int start_rank, int start_index)
-{
-  int prev_score = ranked[start_index];
-  int rank = start_rank;
-
-  if (score < prev_score) return rank + 1;
-
-  for (int count = start_index - 1; count >= 0; count--) {
-    int curr_score = ranked[count];
-    if (curr_score != prev_score) rank--;
-    if (curr_score <= score) return rank;
-  }
-
-  printf("returning 1st rank");
-  return 1;
-}
-
-int findWorstRank(int ranked_count, int* ranked)
-{
-  int prev_score = ranked[0];
-  int rank = 1;
-
-  for (int count = 1; count < ranked_count; count++) {
-    int curr_score = ranked[count];
-    if (curr_score != prev_score) rank++;
-  }
-
-  return rank;
-}
-
 int* climbingLeaderboard(int ranked_count, int* ranked, int player_count, int* player, int* result_count) {
   int* result = malloc(player_count * sizeof(int));
-  int prev_index = ranked_count - 1;
-  int prev_rank = findWorstRank(ranked_count, ranked);
 
-  for (int count = 0; count < player_count; count++) {
-    int rank_index = findRankIndex(ranked_count, ranked, player[count]);
-    int rank = findRankFromIndex(player[count], ranked, prev_rank, prev_index);
-    result[count] = rank;
-
-    printf("score: %d | rank index: %d | rank: %d\n", player[count], rank_index, result[count]);
-
-    prev_index = rank_index;
-    prev_rank = prev_rank < rank ? prev_rank : rank;
+  int worst_rank = 0;
+  for (int count = 1; count < ranked_count; count++) {
+    if (ranked[count] == ranked[count - 1]) continue;
+    ranked[worst_rank++] = ranked[count - 1];
   }
+  if (ranked[ranked_count - 1] != ranked[ranked_count - 2])
+    ranked[worst_rank++] = ranked[ranked_count - 1];
+
+  for (int count = 0; count < player_count; count++)
+    result[count] = findRank(worst_rank, ranked, player[count]) + 1;
 
   *result_count = player_count;
   return result;
@@ -125,6 +93,7 @@ int* climbingLeaderboard(int ranked_count, int* ranked, int player_count, int* p
 
 int main()
 {
+  /*
     int ranked_count = parse_int(ltrim(rtrim(readline())));
 
     char** ranked_temp = split_string(rtrim(readline()));
@@ -148,6 +117,12 @@ int main()
 
         *(player + i) = player_item;
     }
+    */
+
+    int ranked_count = 6;
+    int ranked[] = { 100, 90, 90, 80, 75, 60};
+    int player_count = 5;
+    int player[] = { 59, 65, 77, 90, 101 };
 
     int result_count;
     int* result = climbingLeaderboard(ranked_count, ranked, player_count, player, &result_count);
