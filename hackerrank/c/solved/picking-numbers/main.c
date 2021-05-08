@@ -24,25 +24,22 @@ int parse_int(char*);
  */
 
 int pickingNumbers(int a_count, int* a) {
-  int* counts = calloc(101, sizeof(int));
+  const int max_num_elements = 100;
+  int* counts = calloc(max_num_elements, sizeof(int));
 
   for (int count = 0; count < a_count; count++) {
     int val = a[count];
     counts[val] += 1;
-    counts[val - 1] += 1;
-    counts[val + 1] += 1;
   }
 
-  int max_count = 0;
-  for (int count = 0; count < 101; count++) {
-    if (counts[count] > max_count)
-      max_count = counts[count];
+  int result = 0;
+  for (int count = 0; count < max_num_elements - 1; count++) {
+    int num_elements = counts[count] + counts[count + 1];
+    if (num_elements > result)
+      result = num_elements;
   }
 
-  return max_count;
-
-  // [ 2, 4, 4, 4, 5, 5, 3]
-  // [ 2, 5, 6, 4, 1, 0 ]
+  return result;
 }
 
 int main()
