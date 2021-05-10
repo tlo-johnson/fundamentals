@@ -26,8 +26,52 @@ int parse_int(char*);
  *  3. INTEGER k
  */
 
-int beautifulDays(int i, int j, int k) {
+int power(int base, int exponent)
+{
+  return (int) pow((double) base, (double) exponent);
+}
 
+int reverse(int day)
+{
+  // try implementing using scanf
+
+  int num_digits = 0;
+  while (day / power(10, ++num_digits) > 0);
+
+  int* digits = (int*) malloc(num_digits * sizeof(int));
+  num_digits--;
+
+  int remainder = day;
+  for (int exp = num_digits, count = 0; exp >= 0; exp--) {
+    int divisor = power(10, exp);
+    digits[num_digits - count++] = remainder / divisor;
+    remainder = day % divisor;
+  }
+
+  int result = 0;
+  for (int count = 0; count <= num_digits; count++)
+    result += digits[count] * power(10, num_digits - count);
+
+  free(digits);
+
+  return result;
+}
+
+int isBeautifulDay(int day, int day_reversed, int divisor)
+{
+  return (abs(day - day_reversed) % divisor) == 0;
+}
+
+int beautifulDays(int i, int j, int k) {
+  int num_beautiful_days = 0;
+
+  for (i; i <= j; i++) {
+    int day_reversed = reverse(i);
+    if (isBeautifulDay(i, day_reversed, k))
+      num_beautiful_days++;
+  }
+
+  return num_beautiful_days;
 }
 
 int main()
