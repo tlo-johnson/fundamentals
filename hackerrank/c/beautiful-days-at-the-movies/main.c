@@ -26,11 +26,6 @@ int parse_int(char*);
  *  3. INTEGER k
  */
 
-int power(int base, int exponent)
-{
-  return (int) pow((double) base, (double) exponent);
-}
-
 int reverse(int day)
 {
   char* day_string = malloc(7 * sizeof(int));
@@ -66,6 +61,27 @@ int beautifulDays(int i, int j, int k) {
   return num_beautiful_days;
 }
 
+int beautifulDays2(int i, int j, int k) {
+  int count = 0;
+
+  for(; i <= j; i++)
+  {
+    int sum = 0;
+    int x = i;
+    while(x != 0)
+    {
+      int rem = x % 10;
+      sum = (sum * 10) + rem;
+      x = x / 10;
+    }
+
+    if(abs(i - sum) % k == 0)
+      count = count + 1;
+  }
+
+  return count;
+}
+
 int main()
 {
     char** first_multiple_input = split_string(rtrim(readline()));
@@ -76,7 +92,7 @@ int main()
 
     int k = parse_int(*(first_multiple_input + 2));
 
-    int result = beautifulDays(i, j, k);
+    int result = beautifulDays2(i, j, k);
 
     printf("%d\n", result);
 
