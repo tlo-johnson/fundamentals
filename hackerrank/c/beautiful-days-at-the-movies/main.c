@@ -33,26 +33,18 @@ int power(int base, int exponent)
 
 int reverse(int day)
 {
-  // try implementing using scanf
+  char* day_string = malloc(7 * sizeof(int));
+  sprintf(day_string, "%d", day);
 
-  int num_digits = 0;
-  while (day / power(10, ++num_digits) > 0);
-
-  int* digits = (int*) malloc(num_digits * sizeof(int));
-  num_digits--;
-
-  int remainder = day;
-  for (int exp = num_digits, count = 0; exp >= 0; exp--) {
-    int divisor = power(10, exp);
-    digits[num_digits - count++] = remainder / divisor;
-    remainder = day % divisor;
+  int length = strlen(day_string) - 1; // zero-based count
+  for (int count = 0; count < length - count; count++) {
+    int temp = day_string[count];
+    day_string[count] = day_string[length - count];
+    day_string[length - count] = temp;
   }
 
-  int result = 0;
-  for (int count = 0; count <= num_digits; count++)
-    result += digits[count] * power(10, num_digits - count);
-
-  free(digits);
+  int result = atoi(day_string);
+  free(day_string);
 
   return result;
 }
