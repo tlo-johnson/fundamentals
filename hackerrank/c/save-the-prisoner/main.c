@@ -26,14 +26,24 @@ int parse_int(char*);
  *  3. INTEGER s
  */
 
-int saveThePrisoner(int prisoners, int sweets, int chair) {
-  int curr_chair = chair - 1;
-  for (int count = sweets; count >= 1; count--) {
-    curr_chair = (curr_chair + 1) % (prisoners + 1);
-    if (curr_chair == 0) curr_chair++;
-  }
-  return curr_chair;
+int saveThePrisoner2(int prisoners, int sweets, int chair) {
+  int end_chair = (--chair + (sweets % prisoners)) % prisoners;
+  return end_chair == 0 ? prisoners : end_chair;
 }
+
+int saveThePrisoner(int prisoners, int sweets, int chair) {
+  // --sweets because mod is zero based
+  // --chair because the first prisoner to get a sweet is not counted (i.e. we deal with delta in chairs)
+  // add 1 at end because we need to go back to one-based count
+  return ((--sweets + --chair) % prisoners) + 1;
+}
+
+// (5 + 6) % 6 = 5 - 2 = 3
+
+// 1 2 3 4 5 6
+// prisoners = 6
+// sweets = 5
+// chair = 5
 
 int main()
 {
