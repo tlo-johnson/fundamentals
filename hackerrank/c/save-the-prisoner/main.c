@@ -38,13 +38,6 @@ int saveThePrisoner(int prisoners, int sweets, int chair) {
   return ((--sweets + --chair) % prisoners) + 1;
 }
 
-// (5 + 6) % 6 = 5 - 2 = 3
-
-// 1 2 3 4 5 6
-// prisoners = 6
-// sweets = 5
-// chair = 5
-
 int main()
 {
     int t = parse_int(ltrim(rtrim(readline())));
