@@ -20,6 +20,13 @@ int parse_int(char*);
  *
  * The function accepts INTEGER n as parameter.
  */
+
+/*
+ * thoughts:
+ * it's more efficient to use an array of ints instead of an array of chars to store result
+ * that way you don't have to convert between char and int
+ */
+
 int toDigit(char digit) {
   return digit - '0';
 }
