@@ -25,53 +25,45 @@ int parse_int(char*);
  *  2. INTEGER_ARRAY s
  */
 
-void excludeBucketFor(int val, int* excluded_buckets, int divisor) {
-  int excluded_bucket = divisor - (val % divisor);
-  excluded_bucket = (excluded_bucket == divisor) ? 0 : excluded_bucket;
-  excluded_buckets[excluded_bucket] = 1;
-}
+/*
+ * group all numbers into their modulus buckets. comparing conflicting buckets, take the greater number of values.
+ * e.g. comparing buckets 1 and 4, if bucket 1 has 3 numbers and bucket 4 has 1 number, add the 3 numbers from bucket 1.
+ * this example assumes k = 5
+ *
+ * [ 19, 10, 12, 24, 25, 22 ] | k = 4
+ * bucket 0 => 12, 24,
+ * bucket 1 => 25,
+ * bucket 2 => 10, 22
+ * bucket 3 => 19, 
+ *
+ * only 1 num from bucket 0 can be accepted. total count: 1
+ * buckets 1 & 3 both have 1 num. total count: 2
+ * only 1 num from bucket 2 can be accepted. total count: 3
+ */
 
 int nonDivisibleSubset(int divisor, int arr_count, int* arr) {
-  /*
-   * [ 19, 10, 12, 24, 25, 22 ]
-   * 19 => 1, 5, 9, 13, 4n + 1 | 4 - (19 % 4) = 1
-   * 10 => 2, 6, 10, 14, 4n + 2 | 4 - (10 % 4) = 2
-   * 12 => 4, 8, 12, 16, 4n + 0 | 4 - (12 % 4) = 4
-   *
-   * 1 => 2, 5, 8, 3n + 2 | 3 - (1 % 3) = 2
-   * 7 => 2, 5, 8, 3n + 2 | 3 - (7 % 3) = 1
-   * 4 => same bucket
-   * 2 => can't add because in 3n + 2 bucket
-   */
+  int* buckets = calloc(divisor, sizeof(int));
 
-  int max_count = 0;
-
-  for (int outer_index = 0; outer_index < arr_count; outer_index++) {
-    int* excluded_buckets = calloc(divisor, sizeof(int));
-
-    int val = arr[outer_index];
-    int bucket = val % divisor;
-    void excludeBucketFor(val, excluded_buckets, divisor);
-    int count = 1;
-
-    for (int index = outer_index; index < arr_count; index++) {
-      int val = arr[index];
-      int bucket = val % divisor;
-
-      if (excluded_buckets[bucket] != 0) continue;
-      if (bucket == 0 && excluded_buckets[0] != 0) continue;
-
-      int excluded_bucket = divisor - (val % divisor);
-      excluded_bucket = (excluded_bucket == divisor) ? 0 : excluded_bucket;
-      excluded_buckets[excluded_bucket] = 1;
-      count++;
-    }
-    // need to repeat process for all permutations of outer index before moving on to next outer index
-    if (max_count < count) max_count = count;
-    free(excluded_buckets);
+  for (int index = 0; index < arr_count; index++) {
+    int bucket = arr[index] % divisor;
+    buckets[bucket]++;
   }
 
-  return max_count;
+  int count = 0;
+  if (buckets[0] != 0) count++;
+  for (int left_index = 1, right_index = divisor - 1; left_index <= right_index;) {
+    if (left_index == right_index) {
+      count++;
+      break;
+    }
+
+    int num_left = buckets[left_index++];
+    int num_right = buckets[right_index--];
+    count += num_left > num_right ? num_left : num_right;
+  }
+
+  free(buckets);
+  return count;
 }
 
 int main()
